@@ -8,6 +8,13 @@ https://sapcloudian.com/create-sap-fiori-application-with-sap-cap-and-hana-cloud
 
 https://sapcloudian.com/add-security-to-sap-fiori-application-with-xsuaa/
 
+https://community.sap.com/t5/technology-blogs-by-members/lets-deep-dive-into-capm-and-hana-cloud-gt-hanacap/ba-p/13560227
+
+https://community.sap.com/t5/technology-q-a/sapui5-app-on-cf-gt-xs-app-json-route-destination-in-btp-not-getting/qaq-p/12407577
+
+https://community.sap.com/t5/technology-q-a/sapui5-app-on-cf-gt-xs-app-json-route-destination-in-btp-not-getting/qaq-p/12407577
+
+
 
 
 
