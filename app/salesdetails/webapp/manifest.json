@@ -1,0 +1,164 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "com.cap.salesdetails",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.17.1",
+      "toolsId": "9400831d-946a-425d-a03f-186ff5a7f5ad"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/sales-/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.134.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.cap.salesdetails.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "ZS_SalesHeaderList",
+          "target": "ZS_SalesHeaderList"
+        },
+        {
+          "pattern": "ZS_SalesHeader({key}):?query:",
+          "name": "ZS_SalesHeaderObjectPage",
+          "target": "ZS_SalesHeaderObjectPage"
+        },
+        {
+          "pattern": "ZS_SalesHeader({key})/SItem({key2}):?query:",
+          "name": "ZS_SalesItemObjectPage",
+          "target": "ZS_SalesItemObjectPage"
+        }
+      ],
+      "targets": {
+        "ZS_SalesHeaderList": {
+          "type": "Component",
+          "id": "ZS_SalesHeaderList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/ZS_SalesHeader",
+              "variantManagement": "Page",
+              "navigation": {
+                "ZS_SalesHeader": {
+                  "detail": {
+                    "route": "ZS_SalesHeaderObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ZS_SalesHeaderObjectPage": {
+          "type": "Component",
+          "id": "ZS_SalesHeaderObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ZS_SalesHeader",
+              "navigation": {
+                "SItem": {
+                  "detail": {
+                    "route": "ZS_SalesItemObjectPage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ZS_SalesItemObjectPage": {
+          "type": "Component",
+          "id": "ZS_SalesItemObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ZS_SalesHeader/SItem"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

@@ -1,0 +1,96 @@
+_schema-version: 3.3.0
+ID: DemoCapApp
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: DemoCapApp-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: DemoCapApp-db
+      - name: uaa_DemoCapApp
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      instances: 1
+    build-parameters:
+      builder: npm-ci
+  - name: DemoCapApp-db-deployer
+    type: hdb
+    path: db
+    requires:
+      - name: DemoCapApp-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: DemoCapApp-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: DemoCapApp-destination-service
+        parameters:
+          content-target: true
+      - name: DemoCapApp_html_repo_host
+        parameters:
+          service-key:
+            name: DemoCapApp_html_repo_host-key
+      - name: uaa_DemoCapApp
+        parameters:
+          service-key:
+            name: uaa_DemoCapApp-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: ManagedApprouter_DemoCapApp_html_repo_host
+              ServiceInstanceName: DemoCapApp-html5-app-host-service
+              ServiceKeyName: DemoCapApp_html_repo_host-key
+              sap.cloud.service: ManagedApprouter
+            - Authentication: OAuth2UserTokenExchange
+              Name: ManagedApprouter_uaa_DemoCapApp
+              ServiceInstanceName: DemoCapApp-xsuaa-service
+              ServiceKeyName: uaa_DemoCapApp-key
+              sap.cloud.service: ManagedApprouter
+          existing_destinations_policy: ignore
+    build-parameters:
+      no-source: true
+resources:
+  - name: DemoCapApp-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: DemoCapApp-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        version: 1.0.0
+      service: destination
+      service-name: DemoCapApp-destination-service
+      service-plan: lite
+  - name: DemoCapApp_html_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: DemoCapApp-html5-app-host-service
+      service-plan: app-host
+  - name: uaa_DemoCapApp
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-name: DemoCapApp-xsuaa-service
+      service-plan: application
+      config:
+        xsappname: DemoCapApp-${org}-${space}
+        tenant-mode: dedicated
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
