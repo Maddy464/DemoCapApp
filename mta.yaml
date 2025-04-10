@@ -12,10 +12,12 @@ modules:
     provides:
       - name: srv-api
         properties:
-          srv-url: ${default-url}
+          srv-url: '${default-url}'
     parameters:
       buildpack: nodejs_buildpack
       instances: 1
+      memory: 512M
+      disk-quota: 1024M
     build-parameters:
       builder: npm-ci
   - name: DemoCapApp-db-deployer
@@ -25,6 +27,8 @@ modules:
       - name: DemoCapApp-db
     parameters:
       buildpack: nodejs_buildpack
+      memory: 512M
+      disk-quota: 1024M
   - name: DemoCapApp-destination-content
     type: com.sap.application.content
     requires:
@@ -46,12 +50,13 @@ modules:
             - Name: ManagedApprouter_DemoCapApp_html_repo_host
               ServiceInstanceName: DemoCapApp-html5-app-host-service
               ServiceKeyName: DemoCapApp_html_repo_host-key
-              sap.cloud.service: ManagedApprouter
-            - Authentication: OAuth2UserTokenExchange
+              sap.cloud.service: salesdetails.service    
+              URL: '~{srv-api/srv-url}'         
+            - Authentication: OAuth2UserTokenExchange           
+              sap.cloud.service: salesdetails.service
               Name: ManagedApprouter_uaa_DemoCapApp
               ServiceInstanceName: DemoCapApp-xsuaa-service
-              ServiceKeyName: uaa_DemoCapApp-key
-              sap.cloud.service: ManagedApprouter
+              ServiceKeyName: uaa_DemoCapApp-key            
           existing_destinations_policy: ignore
     build-parameters:
       no-source: true
@@ -84,7 +89,7 @@ resources:
       service-name: DemoCapApp-xsuaa-service
       service-plan: application
       config:
-        xsappname: DemoCapApp-${org}-${space}
+        xsappname: 'DemoCapApp-${org}-${space}'
         tenant-mode: dedicated
 parameters:
   enable-parallel-deployments: true

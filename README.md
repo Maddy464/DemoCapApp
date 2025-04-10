@@ -14,6 +14,14 @@ https://community.sap.com/t5/technology-q-a/sapui5-app-on-cf-gt-xs-app-json-rout
 
 https://community.sap.com/t5/technology-q-a/sapui5-app-on-cf-gt-xs-app-json-route-destination-in-btp-not-getting/qaq-p/12407577
 
+https://developers.sap.com/tutorials/build-apps-cap-app.html
+
+https://developers.sap.com/tutorials/build-apps-cap-expose.html
+
+https://developers.sap.com/tutorials/build-apps-cap-service.html
+
+
+
 
 
 
